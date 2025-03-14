@@ -146,12 +146,12 @@
             let reason = document.getElementById("reason").value || "No reason provided";
 
             let sheetUrl = "https://script.google.com/macros/s/AKfycbzwphECoO9i7_K2Y8VXq1yWc0Tayg2uRQEAWlHM_7Q-9Yzjei6vTPiiNWkUtCvcVjkw/exec"; // ✅ Replace with your Google Apps Script URL
-            let fullUrl = ${sheetUrl}?provider=${encodeURIComponent(provider)}&patient=${encodeURIComponent(patient)}&diagnosis=${encodeURIComponent(diagnosis)}&study=${encodeURIComponent(study)}&decision=${decision.value}&reason=${encodeURIComponent(reason)};
+            let fullUrl = `${sheetUrl}?provider=${encodeURIComponent(provider)}&patient=${encodeURIComponent(patient)}&diagnosis=${encodeURIComponent(diagnosis)}&study=${encodeURIComponent(study)}&decision=${decision.value}&reason=${encodeURIComponent(reason)}`;
 
             fetch(fullUrl)
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById("form-section").innerHTML = <h2>Submission Successful!</h2><p>Your submission has been recorded.</p>;
+                    document.getElementById("form-section").innerHTML = `<h2>Submission Successful!</h2><p>Your submission has been recorded.</p>`;
                 })
                 .catch(error => {
                     alert("Error submitting form!");
