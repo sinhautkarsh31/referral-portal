@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Referral</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let urlParams = new URLSearchParams(window.location.search);
+
+            let provider = urlParams.get("provider") || "MISSING";
+            let patient = urlParams.get("patient") || "MISSING";
+            let diagnosis = urlParams.get("diagnosis") || "MISSING";
+            let study = urlParams.get("study") || "MISSING";
+
+            document.getElementById("providerName").innerText = provider;
+            document.getElementById("patientName").innerText = patient;
+            document.getElementById("diagnosis").innerText = diagnosis;
+            document.getElementById("studyName").innerText = study;
+        });
+
+        function validatePasscode() {
+            let passcodeInput = document.getElementById("passcode").value;
+            let correctPasscode = "8420"; 
+
+            if (passcodeInput === correctPasscode) {
+                document.getElementById("auth-section").style.display = "none";
+                document.getElementById("form-section").style.display = "block";
+            } else {
+                alert("Incorrect passcode. Please try again.");
+            }
+        }
+
+        function submitForm() {
+            let urlParams = new URLSearchParams(window.location.search);
+            let provider = urlParams.get("provider") || "ERROR";
+            let patient = urlParams.get("patient") || "ERROR";
+            let diagnosis = urlParams.get("diagnosis") || "ERROR";
+            let study = urlParams.get("study") || "ERROR";
+            let decision = document.querySelector('input[name="decision"]:checked');
+
+            if (!decision) {
+                alert("Please select Yes or No.");
+                return;
+            }
+
+            let reason = document.getElementById("reason").value || "No reason provided";
+
+            let sheetUrl = "https://script.google.com/macros/s/AKfycbzwphECoO9i7_K2Y8VXq1yWc0Tayg2uRQEAWlHM_7Q-9Yzjei6vTPiiNWkUtCvcVjkw/exec"; 
+            let fullUrl = `${sheetUrl}?provider=${encodeURIComponent(provider)}&patient=${encodeURIComponent(patient)}&diagnosis=${encodeURIComponent(diagnosis)}&study=${encodeURIComponent(study)}&decision=${decision.value}&reason=${encodeURIComponent(reason)}`;
+
+            fetch(fullUrl)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("form-section").innerHTML = `<h2>Submission Successful!</h2><p>Your submission has been recorded.</p>`;
+                })
+                .catch(error => {
+                    alert("Error submitting form!");
+                    console.error("Submission Error:", error);
+                });
+        }
+    </script>
+</head>
+<body>
+    <div id="auth-section">
+        <h2>Enter Passcode</h2>
+        <input type="text" id="passcode" placeholder="Enter passcode">
+        <button onclick="validatePasscode()">Submit</button>
+    </div>
+    <div id="form-section" style="display: none;">
+        <h2>Patient Study Referral</h2>
+        <p><strong>Provider:</strong> <span id="providerName"></span></p>
+        <p><strong>Patient:</strong> <span id="patientName"></span></p>
+        <p><strong>Diagnosis:</strong> <span id="diagnosis"></span></p>
+        <p><strong>Study:</strong> <span id="studyName"></span></p>
+        <button onclick="submitForm()">Submit</button>
+    </div>
+</body>
+</html>
