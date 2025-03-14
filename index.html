@@ -46,7 +46,7 @@
 
             let reason = document.getElementById("reason").value || "No reason provided";
 
-            let sheetUrl = "https://script.google.com/macros/s/AKfycbzwphECoO9i7_K2Y8VXq1yWc0Tayg2uRQEAWlHM_7Q-9Yzjei6vTPiiNWkUtCvcVjkw/exec"; 
+            let sheetUrl = "https://script.google.com/macros/s/AKfycbzwphECoO9i7_K2Y8VXq1yWc0Tayg2uRQEAWlHM_7Q-9Yzjei6vTPiiNWkUtCvcVjkw/exec"; // ✅ Replace with your Google Apps Script URL
             let fullUrl = `${sheetUrl}?provider=${encodeURIComponent(provider)}&patient=${encodeURIComponent(patient)}&diagnosis=${encodeURIComponent(diagnosis)}&study=${encodeURIComponent(study)}&decision=${decision.value}&reason=${encodeURIComponent(reason)}`;
 
             fetch(fullUrl)
@@ -67,12 +67,27 @@
         <input type="text" id="passcode" placeholder="Enter passcode">
         <button onclick="validatePasscode()">Submit</button>
     </div>
+
     <div id="form-section" style="display: none;">
         <h2>Patient Study Referral</h2>
         <p><strong>Provider:</strong> <span id="providerName"></span></p>
         <p><strong>Patient:</strong> <span id="patientName"></span></p>
         <p><strong>Diagnosis:</strong> <span id="diagnosis"></span></p>
         <p><strong>Study:</strong> <span id="studyName"></span></p>
+        
+        <h3>Does this patient qualify for the study?</h3>
+        <label>
+            <input type="radio" name="decision" value="Yes"> Yes
+        </label>
+        <label>
+            <input type="radio" name="decision" value="No"> No
+        </label>
+        
+        <br>
+        <label for="reason"><strong>If No, provide a reason:</strong></label>
+        <input type="text" id="reason" placeholder="Reason (optional)">
+
+        <br><br>
         <button onclick="submitForm()">Submit</button>
     </div>
 </body>
